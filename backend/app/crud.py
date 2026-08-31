@@ -2,10 +2,11 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from . import models, schemas
 
+
 # === РАБОТА С ПОЛЬЗОВАТЕЛЯМИ ===
 
 def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
+    return db.query(models.User).filter_by(id=user_id).first()
 
 def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(id=user.id, username=user.username)
@@ -14,13 +15,16 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+
 # === РАБОТА С ПРИВЫЧКАМИ ===
 
 def get_user_habits(db: Session, user_id: int):
-    return db.query(models.Habit).filter(models.Habit.user_id == user_id).all()
+    return db.query(models.Habit).filter_by(user_id=user_id).all()
+
 
 def get_habit(db: Session, habit_id: int):
-    return db.query(models.Habit).filter(models.Habit.id == habit_id).first()
+    return db.query(models.Habit).filter_by(id=habit_id).first()
+
 
 def create_habit(db: Session, habit: schemas.HabitCreate):
     db_habit = models.Habit(
@@ -34,13 +38,15 @@ def create_habit(db: Session, habit: schemas.HabitCreate):
     db.refresh(db_habit)
     return db_habit
 
+
 def delete_habit(db: Session, habit_id: int):
-    db_habit = db.query(models.Habit).filter(models.Habit.id == habit_id).first()
+    db_habit = db.query(models.Habit).filter_by(id=habit_id).first()
     if db_habit:
         db.delete(db_habit)
         db.commit()
         return True
     return False
+
 
 # === ЛОГИРОВАНИЕ (ОТМЕТКИ ВЫПОЛНЕНИЯ) ===
 

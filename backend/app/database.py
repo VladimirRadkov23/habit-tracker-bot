@@ -12,6 +12,7 @@ connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite")
 engine = create_engine(DATABASE_URL, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 # Функция-генератор для получения сессии базы данных в эндпоинтах FastAPI
 def get_db():
     db = SessionLocal()
